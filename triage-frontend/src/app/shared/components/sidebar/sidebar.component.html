@@ -1,0 +1,46 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Header del Sidebar -->
+  <div class="sidebar-header">
+    <div class="logo" *ngIf="!isCollapsed">
+      <i class="bi bi-hospital"></i>
+      <span>Triage Inteligente</span>
+    </div>
+    <div class="logo-icon" *ngIf="isCollapsed">
+      <i class="bi bi-hospital"></i>
+    </div>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i [class]="isCollapsed ? 'bi bi-arrow-right-circle' : 'bi bi-arrow-left-circle'"></i>
+    </button>
+  </div>
+
+  <!-- Perfil del Usuario -->
+  <div class="user-profile">
+    <div class="avatar" [class.collapsed]="isCollapsed">
+      <div class="avatar-initial">{{ getUserInitial() }}</div>
+    </div>
+    <div class="user-info" *ngIf="!isCollapsed">
+      <h6 class="user-name">{{ getUserName() }}</h6>
+      <small class="user-role">{{ getUserRole() }}</small>
+    </div>
+  </div>
+
+  <!-- Menú de Navegación -->
+  <div class="sidebar-menu">
+    <div class="menu-item" *ngFor="let item of filteredMenuItems" [class.active]="isActive(item.route)"
+      (click)="navigateTo(item.route)">
+      <i [class]="item.icon"></i>
+      <span *ngIf="!isCollapsed">{{ item.label }}</span>
+    </div>
+  </div>
+
+  <!-- Footer con Logout -->
+  <div class="sidebar-footer">
+    <div class="menu-item logout" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span *ngIf="!isCollapsed">Cerrar Sesión</span>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay para móvil -->
+<div class="sidebar-overlay" *ngIf="!isCollapsed" (click)="toggleSidebar()"></div>

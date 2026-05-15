@@ -1,0 +1,129 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12 mb-4">
+      <h2>
+        <i class="bi bi-shield-check"></i> Panel de Validación - Enfermería
+      </h2>
+      <p class="text-white-50">Valide y reclasifique los pacientes según evaluación clínica</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Lista de Pacientes Pendientes -->
+    <div class="col-md-5">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Pacientes Pendientes de Validación ({{ pacientesPendientes.length }})</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush">
+            <div *ngFor="let paciente of pacientesPendientes" class="list-group-item list-group-item-action"
+              [class.active]="pacienteSeleccionado?.id === paciente.id" (click)="seleccionarPaciente(paciente)">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ paciente.numeroTurno }}</strong>
+                  <div>{{ paciente.pacienteNombre }}</div>
+                  <small class="text-muted">Llegó hace {{ getTiempoTexto(paciente.tiempoEsperaMinutos) }}</small>
+                </div>
+                <div>
+                  <span class="badge" [style.background-color]="getColorNivel(paciente.nivelTriage || 4)">
+                    {{ paciente.nivelTriage || '?' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="pacientesPendientes.length === 0" class="text-center py-4">
+              <i class="bi bi-check-circle fs-1 text-success"></i>
+              <p class="mb-0">No hay pacientes pendientes de validación</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de Validación -->
+    <div class="col-md-7">
+      <div class="card shadow" *ngIf="pacienteSeleccionado; else noSeleccionado">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Validar Paciente</h5>
+        </div>
+        <div class="card-body">
+          <!-- Información del Paciente -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label class="text-muted">Turno</label>
+              <h4 class="fw-bold">{{ pacienteSeleccionado.numeroTurno }}</h4>
+            </div>
+            <div class="col-md-6">
+              <label class="text-muted">Nivel Sugerido por Sistema</label>
+              <div>
+                <span class="badge fs-6 p-2" [style.background-color]="getColorNivel(pacienteSeleccionado.nivelTriage)">
+                  Nivel {{ pacienteSeleccionado.nivelTriage }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-12">
+              <label class="text-muted">Paciente</label>
+              <h5>{{ pacienteSeleccionado.pacienteNombre }}</h5>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-12">
+              <label class="text-muted">Tiempo en Espera</label>
+              <h5>{{ getTiempoTexto(pacienteSeleccionado.tiempoEsperaMinutos) }}</h5>
+            </div>
+          </div>
+
+          <!-- Formulario de Validación -->
+          <form [formGroup]="formularioValidacion">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Nivel de Triage Asignado *</label>
+              <div class="row">
+                <div class="col-md-2 col-4 mb-2" *ngFor="let nivel of nivelesTriage">
+                  <button type="button" class="btn w-100" [style.background-color]="nivel.color"
+                    [class.btn-outline-secondary]="formularioValidacion.value.nivelValidado !== nivel.nivel"
+                    (click)="formularioValidacion.patchValue({ nivelValidado: nivel.nivel })">
+                    {{ nivel.nivel }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-control" rows="3" formControlName="observaciones"
+                placeholder="Registrar hallazgos clínicos relevantes..."></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button class="btn btn-success btn-lg" (click)="validarPaciente()" [disabled]="isLoading">
+                <span *ngIf="!isLoading">✅ Confirmar Validación</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Procesando...
+                </span>
+              </button>
+              <button class="btn btn-outline-secondary" (click)="pacienteSeleccionado = null">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <ng-template #noSeleccionado>
+        <div class="card shadow text-center">
+          <div class="card-body py-5">
+            <i class="bi bi-hand-index fs-1 text-muted"></i>
+            <h5 class="mt-3">Seleccione un paciente de la lista</h5>
+            <p class="text-muted">Haga clic en cualquier paciente pendiente para comenzar la validación</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

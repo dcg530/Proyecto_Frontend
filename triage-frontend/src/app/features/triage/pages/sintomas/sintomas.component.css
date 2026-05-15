@@ -1,0 +1,10 @@
+/* src/app/features/triage/pages/sintomas/sintomas.component.css */
+input[type="range"] {
+  width: 100%;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}

@@ -1,0 +1,98 @@
+<!-- src/app/features/pacientes/pages/lista-pacientes/lista-pacientes.component.html -->
+<div class="container-fluid py-4">
+  <!-- Header - Botón nuevo paciente solo visible para admin -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+      <i class="bi bi-people"></i> Gestión de Pacientes
+    </h2>
+    <button *ngIf="isAdmin" class="btn btn-primary" (click)="nuevoPaciente()">
+      <i class="bi bi-plus-circle"></i> Nuevo Paciente
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Buscar</label>
+          <input type="text" class="form-control" placeholder="Identificación, nombres o apellidos..."
+            [(ngModel)]="searchTerm" (ngModelChange)="filtrarPacientes()">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Género</label>
+          <select class="form-select" [(ngModel)]="selectedGenero" (ngModelChange)="filtrarPacientes()">
+            <option value="todos">Todos</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">EPS</label>
+          <select class="form-select" [(ngModel)]="selectedEps" (ngModelChange)="filtrarPacientes()">
+            <option value="todas">Todas</option>
+            <option *ngFor="let eps of epsList" [value]="eps">{{ eps }}</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button class="btn btn-outline-secondary w-100" (click)="limpiarFiltros()">
+            <i class="bi bi-eraser"></i> Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Pacientes -->
+  <div class="card shadow">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Identificación</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Genero</th>
+              <th>Edad</th>
+              <th>EPS</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let paciente of pacientesFiltrados">
+              <td>{{ paciente.id }}</td>
+              <td>{{ paciente.identificacion }}</td>
+              <td>{{ paciente.nombres }}</td>
+              <td>{{ paciente.apellidos }}</td>
+              <td>{{ paciente.genero }}</td>
+              <td>{{ getEdad(paciente.fechaNacimiento) }} años</td>
+              <td>{{ paciente.eps }}</td>
+              <td *ngIf="isAdmin">
+                <button class="btn btn-sm btn-info me-1" (click)="verDetalle(paciente.id)" title="Ver detalles">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-warning" (click)="editarPaciente(paciente.id)" title="Editar">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </td>
+              <td *ngIf="!isAdmin">
+                <button class="btn btn-sm btn-info" (click)="verDetalle(paciente.id)" title="Ver detalles">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="pacientesFiltrados.length === 0">
+              <td colspan="8" class="text-center py-4">
+                <i class="bi bi-inbox fs-1"></i>
+                <p class="mb-0">No hay pacientes registrados</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

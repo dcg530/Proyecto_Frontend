@@ -1,0 +1,334 @@
+.kiosco-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 20px;
+}
+
+.kiosco-card {
+  max-width: 650px;
+  width: 100%;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kiosco-header {
+  padding: 40px 30px;
+  text-align: center;
+  color: white;
+}
+
+.nivel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.nivel-icon {
+  font-size: 24px;
+}
+
+.nivel-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.kiosco-header h1 {
+  font-size: 32px;
+  margin: 10px 0;
+  font-weight: 700;
+}
+
+.kiosco-header p {
+  font-size: 14px;
+  opacity: 0.95;
+  margin: 0;
+}
+
+.kiosco-body {
+  padding: 40px;
+}
+
+.turno-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  margin-bottom: 25px;
+  color: white;
+}
+
+.turno-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.turno-number {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin: 10px 0;
+}
+
+.turno-fecha {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.tiempo-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 1px solid #e0e0e0;
+}
+
+.tiempo-icon i {
+  font-size: 48px;
+  color: #0056b3;
+}
+
+.tiempo-info {
+  flex: 1;
+}
+
+.tiempo-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.tiempo-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #333;
+}
+
+.tiempo-value span {
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+}
+
+.tiempo-estimado {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.tiempo-estimado i {
+  font-size: 12px;
+  margin-right: 3px;
+}
+
+.mensaje-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #e8f4fd;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 25px;
+}
+
+.mensaje-card i {
+  font-size: 24px;
+  color: #0056b3;
+}
+
+.mensaje-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.mensaje-card.warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.mensaje-card.warning i {
+  color: #ffc107;
+}
+
+.instrucciones-card {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.instrucciones-card h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.instrucciones-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instrucciones-card li {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #eee;
+}
+
+.instrucciones-card li:last-child {
+  border-bottom: none;
+}
+
+.instrucciones-card li i {
+  width: 24px;
+  color: #0056b3;
+}
+
+.qr-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 25px;
+  border: 1px dashed #ccc;
+}
+
+.qr-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.qr-placeholder i {
+  font-size: 48px;
+  color: #666;
+}
+
+.qr-placeholder span {
+  font-size: 10px;
+  color: #999;
+}
+
+.qr-info small {
+  color: #666;
+  font-size: 11px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-print,
+.btn-new {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-print {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-print:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+.btn-new {
+  background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+  color: white;
+}
+
+.btn-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 86, 179, 0.4);
+}
+
+.kiosco-footer {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kiosco-footer .small {
+  font-size: 10px;
+  margin-top: 5px;
+  color: #28a745;
+}
+
+@media (max-width: 768px) {
+  .kiosco-body {
+    padding: 20px;
+  }
+
+  .turno-number {
+    font-size: 36px;
+  }
+
+  .tiempo-value {
+    font-size: 28px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .instrucciones-card li {
+    font-size: 12px;
+  }
+}

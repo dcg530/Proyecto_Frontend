@@ -1,0 +1,71 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --triage-1: #FF0000;
+  --triage-2: #FF6600;
+  --triage-3: #FFCC00;
+  --triage-4: #00CC00;
+  --triage-5: #0066CC;
+  --primary-color: #0056b3;
+  --secondary-color: #17a2b8;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.btn-triage-1 {
+  background-color: var(--triage-1);
+  border-color: var(--triage-1);
+  color: white;
+}
+
+.btn-triage-2 {
+  background-color: var(--triage-2);
+  border-color: var(--triage-2);
+  color: white;
+}
+
+.btn-triage-3 {
+  background-color: var(--triage-3);
+  border-color: var(--triage-3);
+  color: #333;
+}
+
+.btn-triage-4 {
+  background-color: var(--triage-4);
+  border-color: var(--triage-4);
+  color: white;
+}
+
+.btn-triage-5 {
+  background-color: var(--triage-5);
+  border-color: var(--triage-5);
+  color: white;
+}
+
+.triage-badge {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+}

@@ -1,0 +1,100 @@
+<div class="kiosco-container">
+  <div class="kiosco-card">
+    <!-- Header -->
+    <div class="kiosco-header">
+      <div class="hospital-icon">
+        <i class="bi bi-hospital"></i>
+      </div>
+      <h1>Sistema de Triage Inteligente</h1>
+    </div>
+
+    <!-- Body -->
+    <div class="kiosco-body">
+      <!-- Paso 1: Identificación -->
+      <div class="step-indicator">
+        <div class="step active">
+          <div class="step-number">1</div>
+          <div class="step-text">Identificación</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-text">Síntomas</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-text">Resultado</div>
+        </div>
+      </div>
+
+      <!-- Formulario de Identificación -->
+      <div class="form-container">
+        <h2><i class="bi bi-person-badge"></i> Bienvenido</h2>
+        <p class="welcome-text">Por favor ingrese sus datos para comenzar</p>
+
+        <form [formGroup]="identificacionForm" (ngSubmit)="verificarPaciente()">
+          <div class="form-group">
+            <label><i class="bi bi-card-text"></i> Número de Identificación</label>
+            <input type="text" class="form-control form-control-lg" formControlName="identificacion"
+              placeholder="Ingrese su CC, CE o TI" autofocus>
+            <small class="form-text text-muted">Ej: 123456789</small>
+          </div>
+
+          <div class="form-group">
+            <label><i class="bi bi-building"></i> EPS</label>
+            <select class="form-control form-control-lg" formControlName="eps">
+              <option value="">Seleccione su EPS</option>
+              <option *ngFor="let eps of epsList" [value]="eps">{{ eps }}</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-verify" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <i class="bi bi-search"></i> Verificar
+            </span>
+            <span *ngIf="isLoading">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Verificando...
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Paciente Encontrado -->
+      <div *ngIf="pacienteEncontrado" class="result-card success">
+        <div class="result-icon">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <div class="result-content">
+          <h4>¡Paciente encontrado!</h4>
+          <p>{{ pacienteEncontrado.nombres }} {{ pacienteEncontrado.apellidos }}</p>
+          <button class="btn-continue" (click)="continuarConPacienteExistente()">
+            Continuar <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Paciente No Encontrado - Nuevo Registro -->
+      <div *ngIf="mostrarRegistro" class="result-card warning">
+        <div class="result-icon">
+          <i class="bi bi-person-plus"></i>
+        </div>
+        <div class="result-content">
+          <h4>Paciente no registrado</h4>
+          <p>No encontramos su información. Complete el registro para continuar.</p>
+          <button class="btn-register" [routerLink]="['/kiosco/registro']"
+            [queryParams]="{identificacion: identificacionForm.get('identificacion')?.value, eps: identificacionForm.get('eps')?.value}">
+            Registrar nuevo paciente <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="kiosco-footer">
+      <p>© 2024 Sistema de Triage Inteligente - Todos los derechos reservados</p>
+      <p class="small">En caso de emergencia, diríjase directamente al personal de enfermería</p>
+    </div>
+  </div>
+</div>

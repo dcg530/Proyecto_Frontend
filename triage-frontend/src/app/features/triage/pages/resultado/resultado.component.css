@@ -1,0 +1,20 @@
+.turno-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 20px;
+  color: white;
+}
+
+.nivel-badge {
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+}
+
+.nivel-badge .display-4 {
+  line-height: 100px;
+}
+
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}

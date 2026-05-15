@@ -1,0 +1,38 @@
+/* src/app/features/pacientes/pages/detail-paciente/detail-paciente.component.css */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.row {
+  margin-bottom: 8px;
+}
+
+.border {
+  transition: transform 0.2s;
+}
+
+.border:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.text-primary {
+  color: #007bff !important;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}

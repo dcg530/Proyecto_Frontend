@@ -1,0 +1,86 @@
+<!-- src/app/features/kiosco/pages/resultado-kiosco/resultado-kiosco.component.html -->
+<div class="kiosco-container">
+  <div class="kiosco-card resultado">
+    <!-- Header con color según nivel -->
+    <div class="kiosco-header" [style.background]="getColorNivel(clasificacion?.nivelTriage)">
+      <div class="nivel-badge">
+        <span class="nivel-icon">{{ nivelInfo?.icon }}</span>
+        <span class="nivel-text">Nivel {{ clasificacion?.nivelTriage }}</span>
+      </div>
+      <h1>{{ getNombreNivel(clasificacion?.nivelTriage) }}</h1>
+      <p>{{ clasificacion?.recomendacion }}</p>
+    </div>
+
+    <!-- Body -->
+    <div class="kiosco-body text-center">
+      <!-- Número de Turno -->
+      <div class="turno-card">
+        <div class="turno-label">Su número de turno</div>
+        <div class="turno-number">{{ clasificacion?.numeroTurno }}</div>
+        <div class="turno-fecha">{{ fechaActual }}</div>
+      </div>
+
+      <!-- Tiempo de Espera -->
+      <div class="tiempo-card">
+        <div class="tiempo-icon">
+          <i class="bi bi-clock-history"></i>
+        </div>
+        <div class="tiempo-info">
+          <div class="tiempo-label">Tiempo estimado de espera</div>
+          <div class="tiempo-value">{{ clasificacion?.tiempoEstimadoEspera }} <span>minutos</span></div>
+          <div class="tiempo-estimado">
+            <i class="bi bi-info-circle"></i>
+            Tiempo aproximado desde ahora
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje Adicional -->
+      <div class="mensaje-card" [class.warning]="clasificacion?.requiereValidacionEnfermeria">
+        <i class="bi" [class.bi-info-circle]="!clasificacion?.requiereValidacionEnfermeria"
+          [class.bi-shield-exclamation]="clasificacion?.requiereValidacionEnfermeria"></i>
+        <p>{{ clasificacion?.mensajeAdicional || 'Por favor espere en la sala de espera' }}</p>
+      </div>
+
+      <!-- Instrucciones adicionales según nivel -->
+      <div class="instrucciones-card">
+        <h4><i class="bi bi-info-square"></i> Instrucciones</h4>
+        <ul>
+          <li *ngIf="clasificacion?.nivelTriage === 1">
+            <i class="bi bi-ambulance"></i> Diríjase INMEDIATAMENTE a la sala de emergencias
+          </li>
+          <li *ngIf="clasificacion?.nivelTriage === 2">
+            <i class="bi bi-hospital"></i> Diríjase al módulo de triage avanzado
+          </li>
+          <li *ngIf="clasificacion?.nivelTriage === 3">
+            <i class="bi bi-cup-straw"></i> Espere en la sala de espera general
+          </li>
+          <li *ngIf="clasificacion?.nivelTriage === 4">
+            <i class="bi bi-building"></i> Puede solicitar cita en consulta externa
+          </li>
+          <li *ngIf="clasificacion?.nivelTriage === 5">
+            <i class="bi bi-calendar"></i> Agende una cita prioritaria en su EPS
+          </li>
+          <li><i class="bi bi-megaphone"></i> Esté atento a los llamados por altavoz</li>
+          <li><i class="bi bi-phone"></i> Tenga su número de turno a la mano</li>
+        </ul>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="action-buttons">
+        <button class="btn-print" (click)="imprimirTurno()">
+          <i class="bi bi-printer"></i> Imprimir turno
+        </button>
+        <button class="btn-new" (click)="nuevoPaciente()">
+          <i class="bi bi-arrow-repeat"></i> Nuevo paciente
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="kiosco-footer">
+      <p>© 2024 Sistema de Triage Inteligente</p>
+      <p class="small">Presente este número de turno al personal de enfermería</p>
+    </div>
+  </div>
+</div>

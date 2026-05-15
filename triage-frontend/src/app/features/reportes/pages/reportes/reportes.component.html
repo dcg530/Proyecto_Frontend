@@ -1,0 +1,375 @@
+<!-- src/app/features/reportes/pages/reportes/reportes.component.html -->
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+      <i class="bi bi-graph-up"></i> Reportes y Estadísticas
+    </h2>
+    <button class="btn btn-success" (click)="exportarCSV()" [disabled]="loadingExport">
+      <i class="bi bi-download"></i> {{ loadingExport ? 'Exportando...' : 'Exportar CSV' }}
+    </button>
+  </div>
+
+  <!-- Filtros de fecha -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label">Fecha Inicio</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaInicio" (change)="actualizarReportes()">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Fecha Fin</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaFin" (change)="actualizarReportes()">
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="actualizarReportes()">
+            <i class="bi bi-arrow-repeat"></i> Actualizar
+          </button>
+        </div>
+        <div class="col-md-4 text-end">
+          <span class="text-muted">
+            <i class="bi bi-info-circle"></i>
+            Período: {{ fechaInicio | date:'dd/MM/yyyy' }} - {{ fechaFin | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestañas -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'demanda'" (click)="activeTab = 'demanda'"
+        style="cursor: pointer;">
+        <i class="bi bi-calendar-day"></i> Demanda Diaria
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'saturacion'" (click)="activeTab = 'saturacion'"
+        style="cursor: pointer;">
+        <i class="bi bi-graph-up"></i> Saturación
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'tiempos'" (click)="activeTab = 'tiempos'"
+        style="cursor: pointer;">
+        <i class="bi bi-clock-history"></i> Tiempos de Atención
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'eficiencia'" (click)="activeTab = 'eficiencia'"
+        style="cursor: pointer;">
+        <i class="bi bi-shield-check"></i> Eficiencia
+      </a>
+    </li>
+  </ul>
+
+  <!-- Panel Demanda Diaria -->
+<div *ngIf="activeTab === 'demanda'" class="tab-pane">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        <i class="bi bi-calendar-day"></i> Demanda Diaria
+      </h5>
+    </div>
+    <div class="card-body">
+      <!-- Selector de fecha -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Fecha a consultar</label>
+          <div class="input-group">
+            
+            <input type="date" class="form-control" [(ngModel)]="fechaDemanda">
+            <button class="btn btn-primary" (click)="actualizarDemanda()" [disabled]="loadingDemanda">
+              <i class="bi bi-search"></i> Consultar
+            </button>
+            <button class="btn btn-outline-secondary" (click)="cargarDemandaHoy()" [disabled]="loadingDemanda">
+              <i class="bi bi-calendar-today"></i> Hoy
+            </button>
+          </div>
+          <small class="text-muted mt-1 d-block">
+            <i class="bi bi-info-circle"></i>
+            Fecha seleccionada: <strong>{{ formatDateDMY(fechaDemanda) }}</strong>
+          </small>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loadingDemanda" class="text-center py-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3 text-muted">Cargando datos de demanda...</p>
+      </div>
+
+      <!-- Sin datos -->
+      <div *ngIf="!loadingDemanda && demandaData && demandaData.totalPacientes === 0" class="text-center py-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <h4 class="mt-3 text-muted">No hay datos disponibles</h4>
+        <p class="text-muted">
+          No se encontraron pacientes registrados para el día<br>
+          <strong>{{ formatDateReadable(fechaDemanda) }}</strong>
+        </p>
+        <button class="btn btn-outline-primary mt-2" (click)="cargarDemandaHoy()">
+          <i class="bi bi-calendar-today"></i> Consultar hoy
+        </button>
+      </div>
+
+      <!-- Con datos -->
+      <div *ngIf="!loadingDemanda && demandaData && demandaData.totalPacientes > 0">
+        <!-- Total Pacientes -->
+        <div class="row mb-4">
+          <div class="col-md-4 mx-auto">
+            <div class="card bg-gradient-primary text-white text-center border-0 shadow">
+              <div class="card-body">
+                <i class="bi bi-people fs-1"></i>
+                <h2 class="display-4 mb-0">{{ demandaData.totalPacientes }}</h2>
+                <small>Total Pacientes Atendidos</small>
+                <hr class="my-2 bg-white">
+                <small class="d-block">{{ formatDateReadable(fechaDemanda) }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribución por Nivel -->
+        <h6 class="mb-3"><i class="bi bi-pie-chart"></i> Distribución por Nivel de Triage</h6>
+        <div class="row mb-4">
+          <div class="col-md-2 col-6 mb-2 text-center" *ngFor="let nivel of niveles">
+            <div class="card h-100" [style.border-top]="'3px solid ' + nivel.color">
+              <div class="card-body p-2">
+                <div class="badge mb-2 p-2" [style.background-color]="nivel.color">
+                  {{ nivel.nombre }}
+                </div>
+                <h3 class="mb-0">{{ getDistribucionNivel(nivel.id) }}</h3>
+                <small class="text-muted">pacientes</small>
+                <div class="mt-2">
+                  <small class="text-muted">
+                    {{ getPorcentaje(getDistribucionNivel(nivel.id), demandaData.totalPacientes) }}%
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Panel Saturación -->
+  <div *ngIf="activeTab === 'saturacion'" class="tab-pane">
+    <div class="card shadow">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Saturación del Servicio</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loadingSaturacion" class="text-center py-4">
+          <div class="spinner-border text-primary"></div>
+        </div>
+
+        <div *ngIf="!loadingSaturacion && saturacionData">
+          <!-- Métricas principales -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                  <h3>{{ saturacionData.totalPacientes }}</h3>
+                  <small>Total Pacientes</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-warning">
+                <div class="card-body text-center">
+                  <h3>{{ saturacionData.porcentajeSaturacion }}%</h3>
+                  <small>Saturación</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card" [class.bg-success]="saturacionData.estado.includes('Normal')"
+                [class.bg-warning]="saturacionData.estado.includes('Moderada')"
+                [class.bg-danger]="saturacionData.estado.includes('Crítica')" [class.text-white]="true">
+                <div class="card-body text-center">
+                  <h3>{{ saturacionData.estado.split('-')[0] }}</h3>
+                  <small>{{ saturacionData.estado }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saturación por Día -->
+          <h6>Saturación por Día</h6>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Pacientes</th>
+                  <th>Saturación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dia of saturacionData.saturacionPorDia">
+                  <td>{{ dia.fecha }}</td>
+                  <td>{{ dia.cantidad }}</td>
+                  <td>{{ dia.porcentaje }}%</td>
+                  <td>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" [class.bg-danger]="dia.porcentaje > 90"
+                        [class.bg-warning]="dia.porcentaje > 70" [class.bg-success]="dia.porcentaje <= 70"
+                        [style.width.%]="dia.porcentaje">
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Tiempos de Atención -->
+  <div *ngIf="activeTab === 'tiempos'" class="tab-pane">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Tiempos de Atención</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loadingTiempos" class="text-center py-4">
+          <div class="spinner-border text-primary"></div>
+        </div>
+
+        <div *ngIf="!loadingTiempos && tiemposData">
+          <!-- Resumen General -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                  <h3>{{ tiemposData.resumenGeneral.tiempoPromedioGeneral | number:'1.0-0' }} min</h3>
+                  <small>Tiempo Promedio</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                  <h3>{{ tiemposData.resumenGeneral.tiempoMinimoGeneral | number:'1.0-0' }} min</h3>
+                  <small>Tiempo Mínimo</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                  <h3>{{ tiemposData.resumenGeneral.tiempoMaximoGeneral | number:'1.0-0' }} min</h3>
+                  <small>Tiempo Máximo</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tiempos por Nivel -->
+          <h6>Tiempos de Espera por Nivel de Triage</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead class="table-light">
+                <tr>
+                  <th>Nivel</th>
+                  <th>Pacientes</th>
+                  <th>Promedio</th>
+                  <th>Mínimo</th>
+                  <th>Máximo</th>
+                  <th>Estándar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let nivel of tiemposData.porNivel">
+                  <td>
+                    <span class="badge" [style.background-color]="getNivelColor(nivel.nivel)">
+                      Nivel {{ nivel.nivel }}
+                    </span>
+                  </td>
+                  <td>{{ nivel.cantidad }}</td>
+                  <td>{{ nivel.tiempoPromedio | number:'1.0-0' }} min</td>
+                  <td>{{ nivel.tiempoMinimo | number:'1.0-0' }} min</td>
+                  <td>{{ nivel.tiempoMaximo | number:'1.0-0' }} min</td>
+                  <td>
+                    <i class="bi" [class.bi-check-circle-fill]="nivel.nivel" [class.bi-x-circle-fill]="!nivel.nivel"
+                      [class.text-success]="nivel.nivel" [class.text-danger]="!nivel.nivel"></i>
+                    {{ nivel.nivel ? 'Cumple' : 'No cumple' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Eficiencia -->
+  <div *ngIf="activeTab === 'eficiencia'" class="tab-pane">
+    <div class="card shadow">
+      <div class="card-header bg-warning">
+        <h5 class="mb-0">Eficiencia del Sistema de Triaje</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loadingEficiencia" class="text-center py-4">
+          <div class="spinner-border text-primary"></div>
+        </div>
+
+        <div *ngIf="!loadingEficiencia && eficienciaData">
+          <!-- Métricas -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                  <h4>{{ eficienciaData.metricas.porcentajeAutomatizado }}%</h4>
+                  <small>Automatización</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                  <h4>{{ eficienciaData.metricas.precisionSistema }}%</h4>
+                  <small>Precisión del Sistema</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-warning">
+                <div class="card-body text-center">
+                  <h4>{{ eficienciaData.metricas.porcentajeValidadoEnfermeria }}%</h4>
+                  <small>Validados por Enfermería</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-secondary text-white">
+                <div class="card-body text-center">
+                  <h4>{{ eficienciaData.metricas.tasaReclasificacion }}%</h4>
+                  <small>Tasa de Reclasificación</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recomendaciones -->
+          <div class="alert alert-info" *ngIf="eficienciaData.recomendaciones.length > 0">
+            <h6><i class="bi bi-lightbulb"></i> Recomendaciones</h6>
+            <ul>
+              <li *ngFor="let rec of eficienciaData.recomendaciones">{{ rec }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

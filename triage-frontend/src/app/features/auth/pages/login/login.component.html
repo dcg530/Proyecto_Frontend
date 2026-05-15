@@ -1,0 +1,64 @@
+<!-- src/app/features/auth/pages/login/login.component.html -->
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card shadow-lg" style="max-width: 450px; width: 100%;">
+    <div class="card-header bg-primary text-white text-center py-4">
+      <h3 class="mb-0">Sistema de Triage Inteligente</h3>
+    </div>
+
+    <div class="card-body p-4">
+      <h5 class="text-center mb-4">Iniciar Sesión</h5>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" formControlName="username" placeholder="Ingrese su usuario"
+              autocomplete="username">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password"
+              placeholder="Ingrese su contraseña" autocomplete="current-password">
+            <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+              <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Ingresar</span>
+          <span *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Validando...
+          </span>
+        </button>
+
+        <hr class="my-3">
+
+        <div class="text-center">
+          <small class="text-muted">Credenciales de prueba:</small>
+          <div class="d-flex justify-content-center gap-2 mt-2">
+
+            <button type="button" class="btn btn-sm btn-outline-info" (click)="fillEnfermero()">
+              👩‍⚕️ Enfermero
+            </button>
+
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="fillAdmin()">
+              👨‍💼 Admin
+            </button>
+
+            <button type="button" class="btn btn-sm btn-outline-success" (click)="fillKiosco()">
+              🖥️ Kiosco
+            </button>
+            
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

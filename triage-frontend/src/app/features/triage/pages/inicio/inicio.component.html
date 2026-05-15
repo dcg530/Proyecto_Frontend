@@ -1,0 +1,68 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card shadow-lg" style="max-width: 500px; width: 100%;">
+    <div class="card-header bg-primary text-white text-center">
+      <h3 class="mb-0">🏥 Sistema de Triage Inteligente</h3>
+      <small>Sanitas - Centro Industrial</small>
+    </div>
+
+    <div class="card-body">
+      <!-- Formulario de identificación (normal) -->
+      <div *ngIf="!pacienteNoEncontrado">
+        <div class="text-center mb-4">
+          <div class="display-1">👤</div>
+          <h5>Identificación del Paciente</h5>
+        </div>
+
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Número de Identificación *</label>
+            <input type="text" class="form-control form-control-lg" formControlName="identificacion"
+              placeholder="CC, CE, TI" autofocus>
+            <small class="text-danger"
+              *ngIf="formulario.get('identificacion')?.touched && formulario.get('identificacion')?.invalid">
+              Ingrese un número de identificación válido
+            </small>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">EPS *</label>
+            <select class="form-select form-select-lg" formControlName="eps">
+              <option value="">Seleccione su EPS</option>
+              <option *ngFor="let eps of epsList" [value]="eps">{{ eps }}</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="formulario.invalid || isLoading">
+            <span *ngIf="!isLoading">Continuar →</span>
+            <span *ngIf="isLoading">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Validando...
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Mensaje de Paciente No Encontrado -->
+      <div *ngIf="pacienteNoEncontrado" class="text-center">
+        <div class="alert alert-warning" role="alert">
+          <i class="bi bi-person-x" style="font-size: 48px;"></i>
+          <h4 class="mt-2">Paciente no encontrado</h4>
+          <p>El paciente con documento <strong>{{ identificacionBuscada }}</strong> no se encuentra registrado en el
+            sistema.</p>
+          <hr>
+          <p class="mb-0">
+            <i class="bi bi-info-circle"></i>
+            Por favor, solicite a un <strong>administrador</strong> que registre al paciente en el módulo de gestión de
+            pacientes.
+          </p>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" (click)="nuevoIntento()">
+            <i class="bi bi-arrow-repeat"></i> Intentar con otro documento
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

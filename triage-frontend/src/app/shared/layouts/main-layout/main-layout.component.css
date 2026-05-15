@@ -1,0 +1,24 @@
+/* src/app/shared/layouts/main-layout/main-layout.component.css */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  margin-left: 15% ! important;
+  flex: 1;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    width: 100%;
+  }
+}

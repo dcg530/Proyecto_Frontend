@@ -1,0 +1,69 @@
+/* src/app/features/triage/pages/resultado/resultado.component.scss */
+.turno-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 20px;
+  color: #dbdada;
+}
+
+.nivel-badge {
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+}
+
+.nivel-badge .display-4 {
+  line-height: 100px;
+}
+
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.alert-warning i {
+  font-size: 48px;
+}
+
+.alert-warning hr {
+  border-top-color: #ffc107;
+  opacity: 0.3;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+  border: none;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+}
+
+.display-1 {
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.form-control-lg,
+.form-select-lg {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: all 0.3s;
+}
+
+.form-control-lg:focus,
+.form-select-lg:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
+}

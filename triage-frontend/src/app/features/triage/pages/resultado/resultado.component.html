@@ -1,0 +1,86 @@
+<!-- src/app/features/triage/pages/resultado/resultado.component.html -->
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <!-- Tarjeta de Resultado -->
+      <div class="card shadow-lg border-0">
+        <div class="card-header text-center text-white"
+          [style.background-color]="getColorNivel(clasificacion?.nivelTriage)">
+          <h2 class="mb-0">
+            {{ nivelInfo?.icon }} Clasificación de Triage - Nivel {{ clasificacion?.nivelTriage }}
+          </h2>
+        </div>
+
+        <div class="card-body text-center p-4">
+          <!-- Número de Turno -->
+          <div class="turno-container mb-4">
+            <div class="display-1 fw-bold text-primary">
+              {{ clasificacion?.numeroTurno }}
+            </div>
+            <div class="badge bg-secondary fs-6">Su número de turno</div>
+          </div>
+
+          <!-- Nivel de Triage -->
+          <div class="nivel-info mb-4">
+            <div class="nivel-badge d-inline-block p-3 rounded-circle mb-3"
+              [style.background-color]="getColorNivel(clasificacion?.nivelTriage)">
+              <span class="display-4 text-white">{{ clasificacion?.nivelTriage }}</span>
+            </div>
+            <h3>{{ nivelInfo?.nombre }}</h3>
+            <p class="text-muted">Tiempo máximo de espera: {{ nivelInfo?.tiempoMax }} minutos</p>
+          </div>
+
+          <!-- Recomendación -->
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            <strong>Recomendación:</strong> {{ clasificacion?.recomendacion }}
+          </div>
+
+          <!-- Tiempo de Espera -->
+          <div class="tiempo-espera mb-4">
+            <h4>⏱️ Tiempo estimado de espera</h4>
+            <div class="display-4 fw-bold">
+              {{ tiempoRestante }} minutos
+            </div>
+            <div class="progress mt-2" style="height: 10px;">
+              <div class="progress-bar"
+                [style.width.%]="(clasificacion?.tiempoEstimadoEspera - tiempoRestante) / clasificacion?.tiempoEstimadoEspera * 100"
+                [style.background-color]="getColorNivel(clasificacion?.nivelTriage)" role="progressbar">
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje Adicional -->
+          <div class="alerta mb-4" *ngIf="clasificacion?.mensajeAdicional">
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle"></i>
+              {{ clasificacion.mensajeAdicional }}
+            </div>
+          </div>
+
+          <!-- Validación de Enfermería -->
+          <div class="validacion mb-4" *ngIf="clasificacion?.requiereValidacionEnfermeria">
+            <div class="alert alert-danger">
+              <i class="bi bi-shield-exclamation"></i>
+              <strong>⚠️ Requiere validación por enfermería</strong>
+              <p class="mb-0 mt-2">Por favor diríjase al módulo de triage para evaluación inmediata.</p>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary btn-lg" (click)="verColaEspera()">
+              🏥 Ver Sala de Espera
+            </button>
+            <button class="btn btn-secondary" (click)="imprimirTurno()">
+              🖨️ Imprimir Turno
+            </button>
+            <button class="btn btn-outline-secondary" (click)="router.navigate(['/triage/inicio'])">
+              🔄 Nuevo Paciente
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

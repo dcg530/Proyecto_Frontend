@@ -1,0 +1,70 @@
+/* src/app/features/admin/pages/dashboard/dashboard.component.css */
+.stat-card {
+  border: none;
+  border-radius: 15px;
+  transition: transform 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  transition: width 0.5s ease;
+  line-height: 25px;
+  color: white;
+  font-weight: bold;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  border-bottom: 1px solid #eef2f7;
+  border-radius: 15px 15px 0 0 !important;
+  padding: 15px 20px;
+}
+
+.barra {
+  transition: height 0.5s ease;
+}
+
+.btn {
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.distribucion-lista,
+.actividad-grafico {
+  max-height: 300px;
+  overflow-y: auto;
+}

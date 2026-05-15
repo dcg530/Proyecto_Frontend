@@ -1,0 +1,19 @@
+/* src/app/features/auth/pages/login/login.component.css */
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}

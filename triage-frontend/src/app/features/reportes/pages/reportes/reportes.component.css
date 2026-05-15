@@ -1,0 +1,52 @@
+/* src/app/features/reportes/pages/reportes/reportes.component.css */
+.nav-tabs .nav-link {
+  cursor: pointer;
+  color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+
+.progress {
+  height: 20px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  transition: width 0.5s ease;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.btn-outline-primary:hover {
+  transform: scale(1.02);
+}
+
+.alert {
+  border-radius: 10px;
+}
